@@ -104,6 +104,9 @@
     this.$target.prop('name', this.$source.prop('name'))
     this.$target.val(this.$source.val())
     this.$source.removeAttr('name')  // Remove from source otherwise form will pass parameter twice.
+    if(this.$source.data('new-name')) {
+      this.$element.attr('name', this.$source.data('new-name'))  // Add new name from data attribute
+    }
     this.$element.attr('required', this.$source.attr('required'))
     this.$element.attr('rel', this.$source.attr('rel'))
     this.$element.attr('title', this.$source.attr('title'))
@@ -414,7 +417,9 @@
       this.focused = false;
       var val = this.$element.val();
       if (!this.selected && val !== '' ) {
-        this.$element.val('');
+        if(!this.$element.attr('name')) {
+          this.$element.val('');
+        }
         this.$source.val('').trigger('change');
         this.$target.val('').trigger('change');
       }
